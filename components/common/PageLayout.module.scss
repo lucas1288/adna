@@ -1,14 +1,8 @@
 .page {
-  min-height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  padding-top: 6rem; // Space for mobile header
+  flex: 1 0 auto;
 }
 
 .pageContent {
-  min-height: calc(100vh - 6rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -32,13 +26,6 @@
 
 // Desktop adjustments
 @media (min-width: 769px) {
-  .page {
-    padding-top: 11rem; // Space for taller desktop header (~10.5rem rounded up)
-  }
-
-  .pageContent {
-    min-height: calc(100vh - 11rem);
-  }
 }
 
 // Mobile adjustments
