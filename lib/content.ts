@@ -57,6 +57,12 @@ export interface Single {
   link?: string;
 }
 
+export interface Contact {
+  category: string;
+  email: string;
+  buttonLabel: string;
+}
+
 const contentRoot = path.join(process.cwd(), "content");
 
 const readJson = async <T>(relativePath: string): Promise<T> => {
@@ -131,4 +137,18 @@ export const getSingles = async (): Promise<Single[]> => {
   );
 
   return singles.sort((a, b) => b.year - a.year);
+};
+
+export const getContacts = async (): Promise<Contact[]> => {
+  const contactsDir = path.join(contentRoot, "contacts");
+  const entries = await fs.readdir(contactsDir, { withFileTypes: true });
+  const contactFiles = entries
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
+    .map((entry) => entry.name);
+
+  const contacts = await Promise.all(
+    contactFiles.map((file) => readJson<Contact>(path.join("contacts", file)))
+  );
+
+  return contacts;
 };

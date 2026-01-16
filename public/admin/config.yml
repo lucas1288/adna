@@ -77,6 +77,20 @@ collections:
       - { name: "label", label: "Label", widget: "string", required: false }
       - { name: "catalogNumber", label: "Catalog Number", widget: "string", required: false }
       - { name: "link", label: "Listen/Buy Link", widget: "string", required: false }
+  - name: "contacts"
+    label: "Contacts"
+    label_singular: "Contact"
+    editor:
+      preview: false
+    folder: "content/contacts"
+    create: true
+    extension: "json"
+    format: "json"
+    slug: "{{slug}}"
+    fields:
+      - { name: "category", label: "Category", widget: "string" }
+      - { name: "email", label: "Email", widget: "string" }
+      - { name: "buttonLabel", label: "Button Label", widget: "string" }
   - name: "settings"
     label: "Settings"
     editor:

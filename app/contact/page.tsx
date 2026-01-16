@@ -1,15 +1,38 @@
 import PageLayout from "@/components/common/PageLayout";
-import { getPageContent } from "@/lib/content";
+import { getContacts, getPageContent } from "@/lib/content";
+import styles from "./Contact.module.scss";
 
 export default async function Contact() {
-  const content = await getPageContent("contact");
+  const [content, contacts] = await Promise.all([
+    getPageContent("contact"),
+    getContacts(),
+  ]);
 
   return (
     <PageLayout backgroundImage={content.backgroundImage}>
-      <h1>{content.title}</h1>
-      {content.body?.map((line, index) => (
-        <p key={`${index}-${line}`}>{line}</p>
-      ))}
+      <div className={styles.contact}>
+        <header>
+          <h1>{content.title}</h1>
+          {content.body?.map((line, index) => (
+            <p key={`${index}-${line}`}>{line}</p>
+          ))}
+        </header>
+        <ul className={styles.contact__list}>
+          {contacts.map((contact) => (
+            <li key={`${contact.category}-${contact.email}`} className={styles.contact__item}>
+              <div className={styles.contact__label}>
+                {contact.category}: {contact.email}
+              </div>
+              <a
+                className={styles.contact__button}
+                href={`mailto:${contact.email}`}
+              >
+                {contact.buttonLabel} →
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </PageLayout>
   );
 }
