@@ -1,57 +1,45 @@
 "use client";
 
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useSyncExternalStore } from "react";
 import Navigation from "./Navigation";
+import type { NavigationItem } from "@/lib/content";
 import styles from "./Header.module.scss";
 
-const Header = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const [mounted, setMounted] = useState(false);
+const maxScroll = 200;
 
-  // Use useLayoutEffect for synchronous updates before paint
-  useLayoutEffect(() => {
-    setMounted(true);
-    setIsDesktop(window.innerWidth >= 769);
-  }, []);
+const subscribeScroll = (callback: () => void) => {
+  window.addEventListener("scroll", callback, { passive: true });
+  return () => window.removeEventListener("scroll", callback);
+};
 
-  useEffect(() => {
-    if (!mounted) return;
+const getScrollSnapshot = () => Math.min(window.scrollY / maxScroll, 1);
+const getScrollServerSnapshot = () => 0;
 
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 769);
-    };
+const subscribeResize = (callback: () => void) => {
+  window.addEventListener("resize", callback);
+  return () => window.removeEventListener("resize", callback);
+};
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [mounted]);
+const getWidthSnapshot = () => window.innerWidth;
+const getWidthServerSnapshot = () => 0;
 
-  useEffect(() => {
-    if (!mounted) return;
+interface HeaderProps {
+  logoText: string;
+  navigationItems: NavigationItem[];
+}
 
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const maxScroll = 200;
-      const progress = Math.min(scrollY / maxScroll, 1);
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [mounted]);
-
-  // Don't render interactive features until mounted to avoid hydration mismatch
-  if (!mounted) {
-    return (
-      <header className={styles.header}>
-        <div className={styles.container}>
-          <div className={styles.logo}>
-            <h1 style={{ fontSize: "2rem" }}>ADNA</h1>
-          </div>
-        </div>
-      </header>
-    );
-  }
+const Header = ({ logoText, navigationItems }: HeaderProps) => {
+  const scrollProgress = useSyncExternalStore(
+    subscribeScroll,
+    getScrollSnapshot,
+    getScrollServerSnapshot
+  );
+  const windowWidth = useSyncExternalStore(
+    subscribeResize,
+    getWidthSnapshot,
+    getWidthServerSnapshot
+  );
+  const isDesktop = windowWidth >= 769;
 
   const isScrolled = scrollProgress !== 0;
 
@@ -79,20 +67,18 @@ const Header = () => {
   const showHamburger = !isDesktop || scrollProgress >= 0.9;
   const showHorizontalMenu = isDesktop && !isScrolled;
 
-  // Temporary debug - remove later
-  console.log("Debug:", { scrollProgress, isDesktop, showHamburger });
-
   return (
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}>
       <div className={styles.container}>
         <div className={styles.logo} style={logoStyle}>
-          <h1 style={{ fontSize: `${fontSize}rem` }}>ADNA</h1>
+          <h1 style={{ fontSize: `${fontSize}rem` }}>{logoText}</h1>
         </div>
         <Navigation
           isScrolled={isScrolled}
           isDesktop={isDesktop}
           showHamburger={showHamburger}
           showHorizontalMenu={showHorizontalMenu}
+          items={navigationItems}
         />
       </div>
     </header>

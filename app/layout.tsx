@@ -1,24 +1,35 @@
 import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { getNavigation, getSiteSettings, getSocialLinks } from "@/lib/content";
 import "./globals.scss";
 
-export const metadata: Metadata = {
-  title: "ADNA - Official Website",
-  description: "Official website of artist ADNA",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const siteSettings = await getSiteSettings();
 
-export default function RootLayout({
+  return {
+    title: siteSettings.title,
+    description: siteSettings.description,
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [siteSettings, navigationItems, socialLinks] = await Promise.all([
+    getSiteSettings(),
+    getNavigation(),
+    getSocialLinks(),
+  ]);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <Header />
+        <Header logoText={siteSettings.logoText} navigationItems={navigationItems} />
         {children}
-        <Footer />
+        <Footer footerText={siteSettings.footerText} socialLinks={socialLinks} />
       </body>
     </html>
   );

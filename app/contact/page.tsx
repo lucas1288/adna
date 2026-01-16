@@ -1,10 +1,15 @@
 import PageLayout from "@/components/common/PageLayout";
+import { getPageContent } from "@/lib/content";
 
-export default function Contact() {
+export default async function Contact() {
+  const content = await getPageContent("contact");
+
   return (
-    <PageLayout backgroundImage="/images/contact-bg.png">
-      <h1>Contact</h1>
-      <p>Get in touch</p>
+    <PageLayout backgroundImage={content.backgroundImage}>
+      <h1>{content.title}</h1>
+      {content.body?.map((line, index) => (
+        <p key={`${index}-${line}`}>{line}</p>
+      ))}
     </PageLayout>
   );
 }

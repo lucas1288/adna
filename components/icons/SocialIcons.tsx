@@ -1,4 +1,4 @@
-interface IconProps {
+export interface IconProps {
   size?: number;
   color?: string;
   backgroundColor?: string;
@@ -188,3 +188,53 @@ export const YouTubeIcon = ({
     />
   </svg>
 );
+
+export const socialIconNames = [
+  "spotify",
+  "facebook",
+  "instagram",
+  "tiktok",
+  "apple-music",
+  "apple",
+  "tidal",
+  "soundcloud",
+  "youtube",
+] as const;
+
+export type SocialIconName = (typeof socialIconNames)[number];
+
+type IconComponent = (props: IconProps) => JSX.Element;
+
+const iconMap: Record<SocialIconName, IconComponent> = {
+  spotify: SpotifyIcon,
+  facebook: FacebookIcon,
+  instagram: InstagramIcon,
+  tiktok: TikTokIcon,
+  "apple-music": AppleMusicIcon,
+  apple: AppleMusicIcon,
+  tidal: TidalIcon,
+  soundcloud: SoundCloudIcon,
+  youtube: YouTubeIcon,
+};
+
+export const isSocialIconName = (value: string): value is SocialIconName =>
+  Object.prototype.hasOwnProperty.call(iconMap, value);
+
+export const SocialIcon = ({
+  name,
+  size = 24,
+  color = "white",
+  backgroundColor = "transparent",
+  className = "icon",
+}: IconProps & { name: SocialIconName }) => {
+  const Icon = iconMap[name];
+
+  return (
+    <Icon
+      size={size}
+      color={color}
+      backgroundColor={backgroundColor}
+      className={className}
+    />
+  );
+};

@@ -1,10 +1,15 @@
 import PageLayout from "@/components/common/PageLayout";
+import { getPageContent } from "@/lib/content";
 
-export default function Music() {
+export default async function Music() {
+  const content = await getPageContent("music");
+
   return (
-    <PageLayout backgroundImage="/images/music-bg.png">
-      <h1>Music</h1>
-      <p>Explore the discography</p>
+    <PageLayout backgroundImage={content.backgroundImage}>
+      <h1>{content.title}</h1>
+      {content.body?.map((line, index) => (
+        <p key={`${index}-${line}`}>{line}</p>
+      ))}
     </PageLayout>
   );
 }

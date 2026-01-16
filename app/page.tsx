@@ -1,10 +1,15 @@
 import PageLayout from "@/components/common/PageLayout";
+import { getPageContent } from "@/lib/content";
 
-export default function Home() {
+export default async function Home() {
+  const content = await getPageContent("home");
+
   return (
-    <PageLayout backgroundImage="/images/home-bg.png">
-      <h1>ADNA</h1>
-      <p>Welcome to the official website</p>
+    <PageLayout backgroundImage={content.backgroundImage}>
+      <h1>{content.title}</h1>
+      {content.body?.map((line, index) => (
+        <p key={`${index}-${line}`}>{line}</p>
+      ))}
     </PageLayout>
   );
 }

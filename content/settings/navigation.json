@@ -1,0 +1,29 @@
+{
+  "items": [
+    {
+      "label": "Home",
+      "href": "/",
+      "order": 1
+    },
+    {
+      "label": "Music",
+      "href": "/music",
+      "order": 2
+    },
+    {
+      "label": "Tours",
+      "href": "/tours",
+      "order": 3
+    },
+    {
+      "label": "Contact",
+      "href": "/contact",
+      "order": 4
+    },
+    {
+      "label": "Newsletter",
+      "href": "/newsletter",
+      "order": 5
+    }
+  ]
+}

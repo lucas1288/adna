@@ -1,0 +1,68 @@
+backend:
+  name: test-backend
+  branch: main
+local_backend: true
+local_backend_url: http://localhost:8081
+media_folder: "public/images"
+public_folder: "/images"
+collections:
+  - name: "pages"
+    label: "Pages"
+    label_singular: "Page"
+    folder: "content/pages"
+    create: false
+    extension: "json"
+    format: "json"
+    slug: "{{slug}}"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "backgroundImage", label: "Background Image", widget: "image" }
+      - label: "Body"
+        name: "body"
+        widget: "list"
+        field: { name: "line", label: "Line", widget: "string" }
+  - name: "settings"
+    label: "Settings"
+    files:
+      - name: "site"
+        label: "Site"
+        file: "content/settings/site.json"
+        fields:
+          - { name: "siteName", label: "Site Name", widget: "string" }
+          - { name: "title", label: "SEO Title", widget: "string" }
+          - { name: "description", label: "SEO Description", widget: "text" }
+          - { name: "logoText", label: "Logo Text", widget: "string" }
+          - { name: "footerText", label: "Footer Text", widget: "string" }
+      - name: "navigation"
+        label: "Navigation"
+        file: "content/settings/navigation.json"
+        fields:
+          - name: "items"
+            label: "Items"
+            widget: "list"
+            fields:
+              - { name: "label", label: "Label", widget: "string" }
+              - { name: "href", label: "Href", widget: "string" }
+              - { name: "order", label: "Order", widget: "number", value_type: "int" }
+      - name: "social-links"
+        label: "Social Links"
+        file: "content/settings/social-links.json"
+        fields:
+          - name: "links"
+            label: "Links"
+            widget: "list"
+            fields:
+              - name: "platform"
+                label: "Platform"
+                widget: "select"
+                options:
+                  - "spotify"
+                  - "facebook"
+                  - "instagram"
+                  - "tiktok"
+                  - "apple-music"
+                  - "tidal"
+                  - "soundcloud"
+                  - "youtube"
+              - { name: "label", label: "Label", widget: "string" }
+              - { name: "url", label: "URL", widget: "string" }

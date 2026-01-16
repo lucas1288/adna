@@ -1,66 +1,15 @@
 import PageLayout from "@/components/common/PageLayout";
+import { getPageContent } from "@/lib/content";
 
-export default function Tours() {
+export default async function Tours() {
+  const content = await getPageContent("tours");
+
   return (
-    <PageLayout backgroundImage="/images/shows-bg.png">
-      <h1>Tours</h1>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
-      <p>Upcoming shows and dates</p>
+    <PageLayout backgroundImage={content.backgroundImage}>
+      <h1>{content.title}</h1>
+      {content.body?.map((line, index) => (
+        <p key={`${index}-${line}`}>{line}</p>
+      ))}
     </PageLayout>
   );
 }

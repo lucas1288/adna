@@ -3,12 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import styles from "./Navigation.module.scss";
+import type { NavigationItem } from "@/lib/content";
 
 interface NavigationProps {
   isScrolled?: boolean;
   isDesktop?: boolean;
   showHamburger?: boolean;
   showHorizontalMenu?: boolean;
+  items: NavigationItem[];
 }
 
 const Navigation = ({
@@ -16,6 +18,7 @@ const Navigation = ({
   isDesktop = false,
   showHamburger = true,
   showHorizontalMenu = false,
+  items,
 }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -69,31 +72,13 @@ const Navigation = ({
         onClick={closeMenu}
       >
         <ul className={styles.navList} onClick={(e) => e.stopPropagation()}>
-          <li style={{ animationDelay: "0.1s" }}>
-            <Link href="/" onClick={closeMenu}>
-              Home
-            </Link>
-          </li>
-          <li style={{ animationDelay: "0.2s" }}>
-            <Link href="/music" onClick={closeMenu}>
-              Music
-            </Link>
-          </li>
-          <li style={{ animationDelay: "0.3s" }}>
-            <Link href="/tours" onClick={closeMenu}>
-              Tours
-            </Link>
-          </li>
-          <li style={{ animationDelay: "0.4s" }}>
-            <Link href="/contact" onClick={closeMenu}>
-              Contact
-            </Link>
-          </li>
-          <li style={{ animationDelay: "0.5s" }}>
-            <Link href="/newsletter" onClick={closeMenu}>
-              Newsletter
-            </Link>
-          </li>
+          {items.map((item, index) => (
+            <li key={`${item.href}-${item.label}`} style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
+              <Link href={item.href} onClick={closeMenu}>
+                {item.label}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </nav>
