@@ -25,18 +25,20 @@ export interface PageContent {
 
 export interface Show {
   date: string;
-  venue: string;
+  venue?: string;
+  lineup?: string;
   note?: string;
-  location: string;
-  ticketsUrl: string;
+  location?: string;
+  ticketsUrl?: string;
   ticketsLabel?: string;
   soldOut?: boolean;
 }
 
 export interface Release {
   title: string;
-  type: "album" | "single" | "ep";
-  year: number;
+  release_type: "album" | "single" | "ep";
+  is_featured?: boolean;
+  releaseDate: string;
   coverImage: string;
   caption: string;
   link?: string;
@@ -104,7 +106,7 @@ export const getShows = async (): Promise<Show[]> => {
     showFiles.map((file) => readJson<Show>(path.join("shows", file)))
   );
 
-  return shows.sort((a, b) => a.date.localeCompare(b.date));
+  return shows.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
 };
 
 export const getReleases = async (): Promise<Release[]> => {
@@ -118,7 +120,11 @@ export const getReleases = async (): Promise<Release[]> => {
     releaseFiles.map((file) => readJson<Release>(path.join("releases", file)))
   );
 
-  return releases.sort((a, b) => b.year - a.year);
+  return releases.sort(
+    (a, b) =>
+      Date.parse(`${b.releaseDate}T00:00:00Z`) -
+      Date.parse(`${a.releaseDate}T00:00:00Z`)
+  );
 };
 
 export const getContacts = async (): Promise<Contact[]> => {

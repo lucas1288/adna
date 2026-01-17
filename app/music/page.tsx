@@ -3,8 +3,11 @@ import PageLayout from "@/components/common/PageLayout";
 import { getPageContent, getReleases } from "@/lib/content";
 import styles from "./Music.module.scss";
 
-const formatReleaseMeta = (type: string, year: number) =>
-  `${type} (${year})`;
+const formatReleaseMeta = (releaseType: string, releaseDate: string) => {
+  const date = new Date(`${releaseDate}T00:00:00Z`);
+  const year = Number.isNaN(date.getTime()) ? "" : date.getUTCFullYear();
+  return year ? `${releaseType} (${year})` : releaseType;
+};
 
 export default async function Music() {
   const [content, releases] = await Promise.all([
@@ -12,8 +15,12 @@ export default async function Music() {
     getReleases(),
   ]);
 
-  const albums = releases.filter((release) => release.type === "album");
-  const singles = releases.filter((release) => release.type !== "album");
+  const albums = releases.filter(
+    (release) => release.release_type === "album"
+  );
+  const singles = releases.filter(
+    (release) => release.release_type !== "album"
+  );
 
   return (
     <PageLayout backgroundImage={content.backgroundImage}>
@@ -44,7 +51,7 @@ export default async function Music() {
                 )}
                 <div className={styles.music__caption}>{album.title}</div>
                 <div className={styles.music__meta}>
-                  {formatReleaseMeta(album.type, album.year)}
+                  {formatReleaseMeta(album.release_type, album.releaseDate)}
                 </div>
               </li>
             ))}
@@ -73,7 +80,7 @@ export default async function Music() {
                   )}
                   <div className={styles.music__caption}>{single.title}</div>
                   <div className={styles.music__meta}>
-                    {formatReleaseMeta(single.type, single.year)}
+                    {formatReleaseMeta(single.release_type, single.releaseDate)}
                   </div>
                 </li>
               ))}

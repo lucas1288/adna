@@ -40,11 +40,12 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - { name: "date", label: "Date", widget: "datetime", time_format: false, hint: "Show date (YYYY-MM-DD)." }
-      - { name: "venue", label: "Venue", widget: "string", hint: "Venue name." }
+      - { name: "venue", label: "Venue", widget: "string", required: false, hint: "Venue name (optional)." }
+      - { name: "lineup", label: "Lineup", widget: "string", required: false, hint: "Artists performing (optional)." }
       - { name: "note", label: "Note", widget: "string", required: false, hint: "Optional subtitle or tour note." }
-      - { name: "location", label: "Location", widget: "string", hint: "City, region, country." }
-      - { name: "ticketsUrl", label: "Tickets URL", widget: "string", hint: "Link to buy tickets." }
-      - { name: "ticketsLabel", label: "Tickets Label", widget: "string", hint: "Button label, e.g. Tickets." }
+      - { name: "location", label: "Location", widget: "string", required: false, hint: "City, region, country." }
+      - { name: "ticketsUrl", label: "Tickets URL", widget: "string", required: false, hint: "Link to buy tickets (optional)." }
+      - { name: "ticketsLabel", label: "Tickets Label", widget: "string", required: false, hint: "Button label, e.g. Tickets (optional)." }
       - { name: "soldOut", label: "Sold Out", widget: "boolean", required: false, hint: "Toggle when tickets are sold out." }
   - name: "releases"
     label: "Releases"
@@ -52,7 +53,8 @@ collections:
     description: "Albums, singles, and EPs displayed on the music page."
     editor:
       preview: false
-    summary: "{{year}} - {{type}} - {{title}}"
+    summary: "{{releaseDate}} - {{release_type}} - {{title}}"
+    sortable_fields: ["releaseDate", "release_type", "title"]
     folder: "content/releases"
     create: true
     extension: "json"
@@ -60,12 +62,13 @@ collections:
     slug: "{{slug}}"
     fields:
       - { name: "title", label: "Title", widget: "string", hint: "Release title." }
-      - name: "type"
+      - name: "release_type"
         label: "Type"
         widget: "select"
         hint: "Release type."
         options: ["album", "single", "ep"]
-      - { name: "year", label: "Year", widget: "number", value_type: "int", hint: "Release year (YYYY)." }
+      - { name: "is_featured", label: "Featured", widget: "boolean", required: false, hint: "Show this release on the homepage." }
+      - { name: "releaseDate", label: "Release Date", widget: "datetime", time_format: false, hint: "Release date (YYYY-MM-DD)." }
       - { name: "coverImage", label: "Cover Image", widget: "image", hint: "Cover art image." }
       - { name: "caption", label: "Caption", widget: "string", hint: "Caption shown under the cover." }
       - { name: "label", label: "Label", widget: "string", required: false, hint: "Label name (optional)." }
@@ -139,6 +142,7 @@ collections:
                   - "soundcloud"
                   - "youtube"
                   - "discogs"
+                  - "bandcamp"
               - { name: "label", label: "Label", widget: "string", hint: "Accessible label for the link." }
               - { name: "url", label: "URL", widget: "string", hint: "Full URL to the profile." }
       - name: "strings"
