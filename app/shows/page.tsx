@@ -1,6 +1,6 @@
 import Markdown from "@/components/common/Markdown";
 import PageLayout from "@/components/common/PageLayout";
-import { getPageContent, getShows } from "@/lib/content";
+import { getLanguageStrings, getPageContent, getShows } from "@/lib/content";
 import styles from "./Shows.module.scss";
 
 const formatShowDate = (value: string) => {
@@ -19,9 +19,10 @@ const formatShowDate = (value: string) => {
 };
 
 export default async function Shows() {
-  const [content, shows] = await Promise.all([
+  const [content, shows, strings] = await Promise.all([
     getPageContent("shows"),
     getShows(),
+    getLanguageStrings(),
   ]);
 
   return (
@@ -33,30 +34,38 @@ export default async function Shows() {
         ) : null}
       </header>
       <ul className={styles.shows}>
-        {shows.map((show) => (
-          <li key={`${show.date}-${show.venue}`} className={styles["shows__item"]}>
+        {shows.length === 0 ? (
+          <li className={styles["shows__item"]}>
             <div className={styles["shows__meta"]}>
-              <span className={styles["shows__date"]}>
-                {formatShowDate(show.date)}
-              </span>
-              <span className={styles["shows__venue"]}>{show.venue}</span>
-              {show.note ? (
-                <span className={styles["shows__note"]}>{show.note}</span>
-              ) : null}
-            </div>
-            <div className={styles["shows__location"]}>{show.location}</div>
-            <div className={styles["shows__action"]}>
-              <a
-                className={styles["shows__tickets"]}
-                href={show.ticketsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {show.ticketsLabel}
-              </a>
+              <span className={styles["shows__date"]}>{strings.no_shows}</span>
             </div>
           </li>
-        ))}
+        ) : (
+          shows.map((show) => (
+            <li key={`${show.date}-${show.venue}`} className={styles["shows__item"]}>
+              <div className={styles["shows__meta"]}>
+                <span className={styles["shows__date"]}>
+                  {formatShowDate(show.date)}
+                </span>
+                <span className={styles["shows__venue"]}>{show.venue}</span>
+                {show.note ? (
+                  <span className={styles["shows__note"]}>{show.note}</span>
+                ) : null}
+              </div>
+              <div className={styles["shows__location"]}>{show.location}</div>
+              <div className={styles["shows__action"]}>
+                <a
+                  className={styles["shows__tickets"]}
+                  href={show.ticketsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {show.ticketsLabel}
+                </a>
+              </div>
+            </li>
+          ))
+        )}
       </ul>
     </PageLayout>
   );

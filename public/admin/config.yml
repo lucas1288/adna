@@ -32,6 +32,7 @@ collections:
     description: "Upcoming live shows and ticket links."
     editor:
       preview: false
+    summary: "{{venue}} ({{location}})"
     folder: "content/shows"
     create: true
     extension: "json"
@@ -51,6 +52,7 @@ collections:
     description: "Albums displayed on the music page."
     editor:
       preview: false
+    summary: "{{year}} - {{type}} - {{title}}"
     folder: "content/albums"
     create: true
     extension: "json"
@@ -69,6 +71,7 @@ collections:
     description: "Singles and EP releases displayed on the music page."
     editor:
       preview: false
+    summary: "{{year}} - {{type}} - {{title}}"
     folder: "content/singles"
     create: true
     extension: "json"
@@ -110,10 +113,6 @@ collections:
         file: "content/settings/site.json"
         fields:
           - { name: "siteName", label: "Site Name", widget: "string", hint: "Internal site name." }
-          - { name: "title", label: "SEO Title", widget: "string", hint: "Used for the page title tag." }
-          - { name: "description", label: "SEO Description", widget: "text", hint: "Used for the meta description." }
-          - { name: "logoText", label: "Logo Text", widget: "string", hint: "Header logo text." }
-          - { name: "footerText", label: "Footer Text", widget: "string", hint: "Footer copyright or label." }
       - name: "navigation"
         label: "Navigation"
         file: "content/settings/navigation.json"
@@ -157,3 +156,12 @@ collections:
                   - "discogs"
               - { name: "label", label: "Label", widget: "string", hint: "Accessible label for the link." }
               - { name: "url", label: "URL", widget: "string", hint: "Full URL to the profile." }
+      - name: "strings"
+        label: "Language Strings"
+        file: "content/settings/strings.json"
+        fields:
+          - { name: "no_shows", label: "No Shows Label", widget: "string", hint: "Shown when no shows are available." }
+          - { name: "seo_title", label: "SEO Title", widget: "string", hint: "Used for the page title tag." }
+          - { name: "seo_description", label: "SEO Description", widget: "text", hint: "Used for the meta description." }
+          - { name: "logo_text", label: "Logo Text", widget: "string", hint: "Header logo text." }
+          - { name: "footer_text", label: "Footer Text", widget: "string", hint: "Footer copyright or label." }

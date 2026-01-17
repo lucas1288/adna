@@ -3,15 +3,11 @@ import path from "node:path";
 
 export interface SiteSettings {
   siteName: string;
-  title: string;
-  description: string;
-  logoText: string;
-  footerText: string;
 }
 
 export interface NavigationItem {
   label: string;
-  page?: string;
+  page: string;
   href?: string;
 }
 
@@ -63,6 +59,14 @@ export interface Contact {
   buttonLabel: string;
 }
 
+export interface LanguageStrings {
+  no_shows: string;
+  seo_title: string;
+  seo_description: string;
+  logo_text: string;
+  footer_text: string;
+}
+
 const contentRoot = path.join(process.cwd(), "content");
 
 const readJson = async <T>(relativePath: string): Promise<T> => {
@@ -80,14 +84,10 @@ export const getNavigation = async (): Promise<NavigationItem[]> => {
     "settings/navigation.json"
   );
 
-  const resolved = data.items.map((item) => ({
+  return data.items.map((item) => ({
     ...item,
-    href:
-      item.href ??
-      (item.page === "home" ? "/" : item.page ? `/${item.page}` : "/"),
+    href: item.page === "home" ? "/" : `/${item.page}`,
   }));
-
-  return resolved;
 };
 
 export const getSocialLinks = async (): Promise<SocialLink[]> => {
@@ -156,4 +156,8 @@ export const getContacts = async (): Promise<Contact[]> => {
   );
 
   return contacts;
+};
+
+export const getLanguageStrings = async (): Promise<LanguageStrings> => {
+  return readJson<LanguageStrings>("settings/strings.json");
 };
