@@ -1,0 +1,42 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.home__featured {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.home__featuredTitle {
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.home__featuredSub {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.home__featuredLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 2rem;
+  border: 1px solid #ffffff;
+  font-size: 0.8rem;
+}
+
+.home__featuredArt {
+  display: block;
+  width: min(520px, 90vw);
+  max-height: 60vh;
+  object-fit: contain;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}

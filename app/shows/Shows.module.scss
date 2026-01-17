@@ -1,0 +1,81 @@
+.shows {
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.shows__header {
+  margin: 0 0 2rem;
+}
+
+.shows__title {
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+}
+
+.shows__intro {
+  margin: 0.25rem 0 0;
+}
+
+.shows__item {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.shows__meta {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.shows__date {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.shows__venue {
+  font-size: 1.1rem;
+}
+
+.shows__note {
+  opacity: 0.8;
+}
+
+.shows__location {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.shows__action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.shows__tickets {
+  padding: 0.5rem 1.5rem;
+  border: 1px solid #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+}
+
+@media (min-width: 769px) {
+  .shows__item {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr) auto;
+    align-items: center;
+  }
+
+  .shows__meta {
+    gap: 0.35rem;
+  }
+
+  .shows__action {
+    justify-content: flex-start;
+  }
+}

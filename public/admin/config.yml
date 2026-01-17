@@ -1,0 +1,156 @@
+backend:
+  name: test-backend
+  branch: main
+local_backend: true
+local_backend_url: http://localhost:8081
+media_folder: "public/images"
+public_folder: "/images"
+collections:
+  - name: "pages"
+    label: "Pages"
+    label_singular: "Page"
+    description: "Edit core page content and background images."
+    editor:
+      preview: false
+    summary: "{{title}} — {{slug}}"
+    folder: "content/pages"
+    create: false
+    extension: "json"
+    format: "json"
+    slug: "{{slug}}"
+    fields:
+      - { name: "slug", label: "Slug", widget: "hidden", default: "{{slug}}", hint: "Page slug used for URLs.", required: true }
+      - { name: "title", label: "Title", widget: "string", hint: "Page title shown on the page." }
+      - { name: "backgroundImage", label: "Background Image", widget: "image", hint: "Full-page background image." }
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Markdown content rendered on the page."
+  - name: "shows"
+    label: "Shows"
+    label_singular: "Show"
+    description: "Upcoming live shows and ticket links."
+    editor:
+      preview: false
+    summary: "{{venue}} ({{location}})"
+    folder: "content/shows"
+    create: true
+    extension: "json"
+    format: "json"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { name: "date", label: "Date", widget: "datetime", time_format: false, hint: "Show date (YYYY-MM-DD)." }
+      - { name: "venue", label: "Venue", widget: "string", required: false, hint: "Venue name (optional)." }
+      - { name: "lineup", label: "Lineup", widget: "string", required: false, hint: "Artists performing (optional)." }
+      - { name: "note", label: "Note", widget: "string", required: false, hint: "Optional subtitle or tour note." }
+      - { name: "location", label: "Location", widget: "string", required: false, hint: "City, region, country." }
+      - { name: "ticketsUrl", label: "Tickets URL", widget: "string", required: false, hint: "Link to buy tickets (optional)." }
+      - { name: "ticketsLabel", label: "Tickets Label", widget: "string", required: false, hint: "Button label, e.g. Tickets (optional)." }
+      - { name: "soldOut", label: "Sold Out", widget: "boolean", required: false, hint: "Toggle when tickets are sold out." }
+  - name: "releases"
+    label: "Releases"
+    label_singular: "Release"
+    description: "Albums, singles, and EPs displayed on the music page."
+    editor:
+      preview: false
+    summary: "{{releaseDate}} - {{release_type}} - {{title}}"
+    sortable_fields: ["releaseDate", "release_type", "title"]
+    folder: "content/releases"
+    create: true
+    extension: "json"
+    format: "json"
+    slug: "{{slug}}"
+    fields:
+      - { name: "title", label: "Title", widget: "string", hint: "Release title." }
+      - name: "release_type"
+        label: "Type"
+        widget: "select"
+        hint: "Release type."
+        options: ["album", "single", "ep"]
+      - { name: "is_featured", label: "Featured", widget: "boolean", required: false, hint: "Show this release on the homepage." }
+      - { name: "releaseDate", label: "Release Date", widget: "datetime", time_format: false, hint: "Release date (YYYY-MM-DD)." }
+      - { name: "coverImage", label: "Cover Image", widget: "image", hint: "Cover art image." }
+      - { name: "caption", label: "Caption", widget: "string", hint: "Caption shown under the cover." }
+      - { name: "label", label: "Label", widget: "string", required: false, hint: "Label name (optional)." }
+      - { name: "catalogNumber", label: "Catalog Number", widget: "string", required: false, hint: "Catalog number (optional)." }
+      - { name: "link", label: "Listen/Buy Link", widget: "string", required: false, hint: "Optional streaming or store link." }
+  - name: "contacts"
+    label: "Contacts"
+    label_singular: "Contact"
+    description: "Contact blocks shown on the contact page."
+    editor:
+      preview: false
+    summary: "{{category}} - {{email}}"
+    folder: "content/contacts"
+    create: true
+    extension: "json"
+    format: "json"
+    slug: "{{slug}}"
+    fields:
+      - { name: "category", label: "Category", widget: "string", hint: "Booking, Management, General, etc." }
+      - { name: "email", label: "Email", widget: "string", hint: "Email address to contact." }
+      - { name: "buttonLabel", label: "Button Label", widget: "string", hint: "Button text, e.g. Contact Now." }
+  - name: "settings"
+    label: "Settings"
+    description: "Global site and navigation settings."
+    editor:
+      preview: false
+    files:
+      - name: "site"
+        label: "Site"
+        file: "content/settings/site.json"
+        fields:
+          - { name: "siteName", label: "Site Name", widget: "string", hint: "Internal site name." }
+      - name: "navigation"
+        label: "Navigation"
+        file: "content/settings/navigation.json"
+        fields:
+          - name: "items"
+            label: "Items"
+            widget: "list"
+            hint: "Add navigation items in display order."
+            fields:
+              - { name: "label", label: "Label", widget: "string", hint: "Link text." }
+              - name: "page"
+                label: "Page"
+                widget: "relation"
+                hint: "Select a page from the Pages collection."
+                collection: "pages"
+                search_fields: ["title", "slug"]
+                value_field: "slug"
+                display_fields: ["title"]
+      - name: "social-links"
+        label: "Social Links"
+        file: "content/settings/social-links.json"
+        fields:
+          - name: "links"
+            label: "Links"
+            widget: "list"
+            hint: "Add social platforms in display order."
+            fields:
+              - name: "platform"
+                label: "Platform"
+                widget: "select"
+                hint: "Select a supported platform."
+                options:
+                  - "spotify"
+                  - "facebook"
+                  - "instagram"
+                  - "tiktok"
+                  - "apple-music"
+                  - "tidal"
+                  - "soundcloud"
+                  - "youtube"
+                  - "discogs"
+                  - "bandcamp"
+              - { name: "label", label: "Label", widget: "string", hint: "Accessible label for the link." }
+              - { name: "url", label: "URL", widget: "string", hint: "Full URL to the profile." }
+      - name: "strings"
+        label: "Language Strings"
+        file: "content/settings/strings.json"
+        fields:
+          - { name: "no_shows", label: "No Shows Label", widget: "string", hint: "Shown when no shows are available." }
+          - { name: "seo_title", label: "SEO Title", widget: "string", hint: "Used for the page title tag." }
+          - { name: "seo_description", label: "SEO Description", widget: "text", hint: "Used for the meta description." }
+          - { name: "logo_text", label: "Logo Text", widget: "string", hint: "Header logo text." }
+          - { name: "footer_text", label: "Footer Text", widget: "string", hint: "Footer copyright or label." }

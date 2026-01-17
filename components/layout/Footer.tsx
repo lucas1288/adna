@@ -1,20 +1,22 @@
-import styles from './Footer.module.scss';
+import type { SocialLink } from "@/lib/content";
+import styles from "./Footer.module.scss";
 
-const Footer = () => {
+interface FooterProps {
+  footerText: string;
+  socialLinks: SocialLink[];
+}
+
+const Footer = ({ footerText, socialLinks }: FooterProps) => {
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
-        <p>&copy; 2025 Adna. All rights reserved.</p>
+        <p>{footerText}</p>
         <div className={styles.socialLinks}>
-          <a href="#" aria-label="Instagram">
-            Instagram
-          </a>
-          <a href="#" aria-label="Spotify">
-            Spotify
-          </a>
-          <a href="#" aria-label="YouTube">
-            YouTube
-          </a>
+          {socialLinks.map((link) => (
+            <a key={`${link.platform}-${link.url}`} href={link.url} aria-label={link.label}>
+              {link.label}
+            </a>
+          ))}
         </div>
       </div>
     </footer>

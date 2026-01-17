@@ -1,8 +1,6 @@
 .header {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
   width: 100%;
   padding: 1rem 0;
   z-index: 100;
@@ -21,7 +19,7 @@
 }
 
 .logo {
-  position: absolute; // Mobile default
+  position: static;
   will-change: transform, left;
 
   h1 {
@@ -32,10 +30,18 @@
     white-space: nowrap;
     will-change: font-size;
   }
+
+  a {
+    text-decoration: none;
+  }
 }
 
 // Desktop styles
 @media (min-width: 769px) {
+  .header {
+    position: static;
+  }
+
   .header {
     padding: 2rem 0;
   }
@@ -45,12 +51,4 @@
     justify-content: center;
   }
 
-  .logo {
-    position: static; // Static by default on desktop
-  }
-
-  .header.scrolled .container {
-    flex-direction: row;
-    justify-content: space-between;
-  }
 }

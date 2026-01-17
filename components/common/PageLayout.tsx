@@ -1,5 +1,5 @@
-import SocialLinks from './SocialLinks';
-import styles from './PageLayout.module.scss';
+import BackgroundSetter from "./BackgroundSetter";
+import styles from "./PageLayout.module.scss";
 
 interface PageLayoutProps {
   backgroundImage: string;
@@ -8,11 +8,8 @@ interface PageLayoutProps {
 
 const PageLayout = ({ backgroundImage, children }: PageLayoutProps) => {
   return (
-    <div
-      className={styles.page}
-      style={{ backgroundImage: `url(${backgroundImage})` }}
-    >
-      <SocialLinks />
+    <div className={styles.page}>
+      <BackgroundSetter image={backgroundImage} />
       <div className={styles.pageContent}>{children}</div>
     </div>
   );

@@ -1,98 +1,52 @@
 "use client";
 
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useSyncExternalStore } from "react";
+import Link from "next/link";
 import Navigation from "./Navigation";
+import type { NavigationItem } from "@/lib/content";
 import styles from "./Header.module.scss";
 
-const Header = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const [mounted, setMounted] = useState(false);
+const subscribeResize = (callback: () => void) => {
+  window.addEventListener("resize", callback);
+  return () => window.removeEventListener("resize", callback);
+};
 
-  // Use useLayoutEffect for synchronous updates before paint
-  useLayoutEffect(() => {
-    setMounted(true);
-    setIsDesktop(window.innerWidth >= 769);
-  }, []);
+const getWidthSnapshot = () => window.innerWidth;
+const getWidthServerSnapshot = () => 0;
 
-  useEffect(() => {
-    if (!mounted) return;
+interface HeaderProps {
+  logoText: string;
+  navigationItems: NavigationItem[];
+}
 
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 769);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [mounted]);
-
-  useEffect(() => {
-    if (!mounted) return;
-
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const maxScroll = 200;
-      const progress = Math.min(scrollY / maxScroll, 1);
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [mounted]);
-
-  // Don't render interactive features until mounted to avoid hydration mismatch
-  if (!mounted) {
-    return (
-      <header className={styles.header}>
-        <div className={styles.container}>
-          <div className={styles.logo}>
-            <h1 style={{ fontSize: "2rem" }}>ADNA</h1>
-          </div>
-        </div>
-      </header>
-    );
-  }
-
-  const isScrolled = scrollProgress !== 0;
+const Header = ({ logoText, navigationItems }: HeaderProps) => {
+  const windowWidth = useSyncExternalStore(
+    subscribeResize,
+    getWidthSnapshot,
+    getWidthServerSnapshot
+  );
+  const isDesktop = windowWidth >= 769;
 
   // Calculate font size based on device and scroll
   const baseFontSize = isDesktop ? 3 : 2;
-  const fontSizeReduction = isDesktop ? 1 : 0.5;
-  const fontSize = baseFontSize - scrollProgress * fontSizeReduction;
+  const fontSize = baseFontSize;
 
-  // Calculate left position with minimum margin
-  const minMargin = isDesktop ? 2 : 1;
-  const calculatedLeft = 50 - scrollProgress * 45;
-  const finalLeft = Math.max(minMargin, calculatedLeft);
-
-  // Unified positioning logic
-  const logoStyle =
-    isDesktop && !isScrolled
-      ? {}
-      : {
-          position: "absolute" as const,
-          left: `${finalLeft}%`,
-          transform: "translateX(-50%)",
-          ...(isDesktop && { top: 0 }),
-        };
-
-  const showHamburger = !isDesktop || scrollProgress >= 0.9;
-  const showHorizontalMenu = isDesktop && !isScrolled;
-
-  // Temporary debug - remove later
-  console.log("Debug:", { scrollProgress, isDesktop, showHamburger });
+  const showHamburger = !isDesktop;
+  const showHorizontalMenu = isDesktop;
 
   return (
-    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}>
+    <header className={styles.header}>
       <div className={styles.container}>
-        <div className={styles.logo} style={logoStyle}>
-          <h1 style={{ fontSize: `${fontSize}rem` }}>ADNA</h1>
+        <div className={styles.logo}>
+          <h1 style={{ fontSize: `${fontSize}rem` }}>
+            <Link href="/">{logoText}</Link>
+          </h1>
         </div>
         <Navigation
-          isScrolled={isScrolled}
           isDesktop={isDesktop}
           showHamburger={showHamburger}
           showHorizontalMenu={showHorizontalMenu}
+          items={navigationItems}
         />
       </div>
     </header>

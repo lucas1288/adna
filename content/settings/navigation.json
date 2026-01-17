@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "label": "Home",
+      "page": "home"
+    },
+    {
+      "label": "Music",
+      "page": "music"
+    },
+    {
+      "label": "Shows",
+      "page": "shows"
+    },
+    {
+      "label": "Contact",
+      "page": "contact"
+    },
+    {
+      "label": "Newsletter",
+      "page": "newsletter"
+    }
+  ]
+}
