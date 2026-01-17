@@ -4,7 +4,8 @@ import { getLanguageStrings, getPageContent, getShows } from "@/lib/content";
 import styles from "./Shows.module.scss";
 
 const formatShowDate = (value: string) => {
-  const date = new Date(`${value}T00:00:00Z`);
+  const datePart = value.split("T")[0];
+  const date = new Date(`${datePart}T00:00:00Z`);
   const parts = new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "2-digit",
@@ -16,6 +17,24 @@ const formatShowDate = (value: string) => {
   const year = parts.find((part) => part.type === "year")?.value ?? "";
 
   return `${month.toUpperCase()} ${day}, ${year}`;
+};
+
+const formatShowTime = (value: string) => {
+  const match = value.match(/T(\d{2}):(\d{2})/);
+  if (!match) {
+    return null;
+  }
+
+  const hours = Number(match[1]);
+  const minutes = match[2];
+  if (Number.isNaN(hours)) {
+    return null;
+  }
+
+  const period = hours >= 12 ? "PM" : "AM";
+  const displayHour = hours % 12 === 0 ? 12 : hours % 12;
+
+  return `${displayHour}:${minutes} ${period}`;
 };
 
 export default async function Shows() {
@@ -41,30 +60,48 @@ export default async function Shows() {
             </div>
           </li>
         ) : (
-          shows.map((show) => (
-            <li key={`${show.date}-${show.venue}`} className={styles["shows__item"]}>
+          shows.map((show) => {
+            const showTime = formatShowTime(show.date);
+
+            return (
+              <li key={`${show.date}-${show.venue}`} className={styles["shows__item"]}>
               <div className={styles["shows__meta"]}>
                 <span className={styles["shows__date"]}>
                   {formatShowDate(show.date)}
                 </span>
-                <span className={styles["shows__venue"]}>{show.venue}</span>
+                {show.venue ? (
+                  <span className={styles["shows__venue"]}>{show.venue}</span>
+                ) : null}
+                {show.lineup ? (
+                  <span className={styles["shows__note"]}>{show.lineup}</span>
+                ) : null}
                 {show.note ? (
                   <span className={styles["shows__note"]}>{show.note}</span>
                 ) : null}
               </div>
-              <div className={styles["shows__location"]}>{show.location}</div>
-              <div className={styles["shows__action"]}>
-                <a
-                  className={styles["shows__tickets"]}
-                  href={show.ticketsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {show.ticketsLabel}
-                </a>
-              </div>
+              {show.location ? (
+                <div className={styles["shows__location"]}>{show.location}</div>
+              ) : null}
+              {showTime ? (
+                <div className={styles["shows__location"]}>
+                  {showTime}
+                </div>
+              ) : null}
+              {show.ticketsUrl && show.ticketsLabel ? (
+                <div className={styles["shows__action"]}>
+                  <a
+                    className={styles["shows__tickets"]}
+                    href={show.ticketsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {show.ticketsLabel}
+                  </a>
+                </div>
+              ) : null}
             </li>
-          ))
+            );
+          })
         )}
       </ul>
     </PageLayout>
