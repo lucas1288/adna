@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { getLanguageStrings, getNavigation, getSiteSettings, getSocialLinks } from "@/lib/content";
+import { withBasePath } from "@/lib/base-path";
 import "./globals.scss";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -11,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: strings.seo_title,
     description: strings.seo_description,
     icons: {
-      icon: "/favicon.ico",
+      icon: withBasePath("/favicon.ico"),
     },
   };
 }

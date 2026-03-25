@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { withBasePath } from "./base-path";
 
 export interface SiteSettings {
   siteName: string;
@@ -92,7 +93,12 @@ export const getSocialLinks = async (): Promise<SocialLink[]> => {
 };
 
 export const getPageContent = async (slug: string): Promise<PageContent> => {
-  return readJson<PageContent>(`pages/${slug}.json`);
+  const data = await readJson<PageContent>(`pages/${slug}.json`);
+
+  return {
+    ...data,
+    backgroundImage: withBasePath(data.backgroundImage),
+  };
 };
 
 export const getShows = async (): Promise<Show[]> => {
@@ -120,7 +126,12 @@ export const getReleases = async (): Promise<Release[]> => {
     releaseFiles.map((file) => readJson<Release>(path.join("releases", file)))
   );
 
-  return releases.sort(
+  const normalized = releases.map((release) => ({
+    ...release,
+    coverImage: withBasePath(release.coverImage),
+  }));
+
+  return normalized.sort(
     (a, b) =>
       Date.parse(`${b.releaseDate}T00:00:00Z`) -
       Date.parse(`${a.releaseDate}T00:00:00Z`)

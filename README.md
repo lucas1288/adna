@@ -3,7 +3,7 @@ ADNA Artist Website (Next.js 16)
 ## Development
 
 ```bash
-yarn dev
+npm run dev
 ```
 
 App: http://localhost:3000  
