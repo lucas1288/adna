@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import styles from "./Navigation.module.scss";
-import type { NavigationItem } from "@/lib/content";
+import type { NavigationItem } from "./types";
 
 interface NavigationProps {
   isDesktop?: boolean;

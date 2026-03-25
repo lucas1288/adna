@@ -21,6 +21,16 @@ type Release = {
   is_featured: boolean;
 };
 
+type Show = {
+  _id: string;
+  date: string;
+  venue?: string;
+  location: string;
+  lineup: string;
+  ticketUrl?: string;
+  time?: string;
+};
+
 type PageContent = {
   _id: string;
   title: string;
@@ -78,7 +88,7 @@ export async function getAllContacts(): Promise<Contact[]> {
 }
 
 // Get all shows, sorted by date (upcoming first)
-export async function getAllShows() {
+export async function getAllShows(): Promise<Show[]> {
   const query = `*[_type == "show"] | order(date asc) {
     _id,
     date,
@@ -93,7 +103,7 @@ export async function getAllShows() {
 }
 
 // Get upcoming shows only (date >= today)
-export async function getUpcomingShows() {
+export async function getUpcomingShows(): Promise<Show[]> {
   const today = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
 
   const query = `*[_type == "show" && date >= $today] | order(date asc) {

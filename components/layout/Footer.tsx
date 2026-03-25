@@ -1,4 +1,4 @@
-import type { SocialLink } from "@/lib/content";
+import type { SocialLink } from "./types";
 import styles from "./Footer.module.scss";
 
 interface FooterProps {
@@ -13,7 +13,11 @@ const Footer = ({ footerText, socialLinks }: FooterProps) => {
         <p>{footerText}</p>
         <div className={styles.socialLinks}>
           {socialLinks.map((link) => (
-            <a key={`${link.platform}-${link.url}`} href={link.url} aria-label={link.label}>
+            <a
+              key={`${link.platform}-${link.url}`}
+              href={link.url}
+              aria-label={link.label}
+            >
               {link.label}
             </a>
           ))}
