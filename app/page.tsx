@@ -4,6 +4,8 @@ import { getPageBySlug, getAllReleases } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import styles from "./Home.module.scss";
 
+export const revalidate = 30;
+
 export default async function Home() {
   const [content, releases] = await Promise.all([
     getPageBySlug("home"),

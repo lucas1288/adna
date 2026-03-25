@@ -3,6 +3,8 @@ import PageLayout from "@/components/common/PageLayout";
 import { urlFor } from "@/sanity/lib/image";
 import { getPageBySlug } from "@/sanity/lib/queries";
 
+export const revalidate = 30;
+
 export default async function Newsletter() {
   const [content] = await Promise.all([getPageBySlug("newsletter")]);
 

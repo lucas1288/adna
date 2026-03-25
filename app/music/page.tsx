@@ -4,6 +4,8 @@ import styles from "./Music.module.scss";
 import { getAllReleases, getPageBySlug } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 
+export const revalidate = 30;
+
 const formatReleaseMeta = (releaseType: string, releaseDate: string) => {
   const date = new Date(`${releaseDate}T00:00:00Z`);
   const year = Number.isNaN(date.getTime()) ? "" : date.getUTCFullYear();
