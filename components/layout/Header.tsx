@@ -27,9 +27,7 @@ const Header = ({ logoText, navigationItems }: HeaderProps) => {
   );
   const isDesktop = windowWidth >= 769;
 
-  // Calculate font size based on device and scroll
-  const baseFontSize = isDesktop ? 3 : 2;
-  const fontSize = baseFontSize;
+  const fontSize = isDesktop ? 3 : 2;
 
   const showHamburger = !isDesktop;
   const showHorizontalMenu = isDesktop;

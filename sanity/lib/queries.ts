@@ -87,21 +87,6 @@ export async function getAllContacts(): Promise<Contact[]> {
   return await client.fetch(query);
 }
 
-// Get all shows, sorted by date (upcoming first)
-export async function getAllShows(): Promise<Show[]> {
-  const query = `*[_type == "show"] | order(date asc) {
-    _id,
-    date,
-    venue,
-    location,
-    lineup,
-    ticketUrl,
-    time
-  }`;
-
-  return await client.fetch(query);
-}
-
 // Get upcoming shows only (date >= today)
 export async function getUpcomingShows(): Promise<Show[]> {
   const today = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD

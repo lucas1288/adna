@@ -1,8 +1,7 @@
 import Markdown from "@/components/common/Markdown";
 import PageLayout from "@/components/common/PageLayout";
-import { getUpcomingShows } from "@/sanity/lib/queries";
+import { getUpcomingShows, getPageBySlug } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
-import { getPageBySlug } from "@/sanity/lib/queries";
 import styles from "./Shows.module.scss";
 
 const formatShowDate = (value: string) => {
@@ -92,7 +91,7 @@ export default async function Shows() {
                   </div>
                 ) : null}
                 {showTime ? (
-                  <div className={styles["shows__location"]}>{showTime}</div>
+                  <div className={styles["shows__time"]}>{showTime}</div>
                 ) : null}
               </li>
             );
