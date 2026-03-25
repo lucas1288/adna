@@ -1,40 +1,45 @@
 import PageLayout from "@/components/common/PageLayout";
 import Markdown from "@/components/common/Markdown";
 import SocialLinks from "@/components/common/SocialLinks";
-import { getContacts, getPageContent } from "@/lib/content";
+import { getPageBySlug, getAllContacts } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
 import styles from "./Contact.module.scss";
 
 export default async function Contact() {
   const [content, contacts] = await Promise.all([
-    getPageContent("contact"),
-    getContacts(),
+    getPageBySlug("contact"),
+    getAllContacts(),
   ]);
 
+  // Convert Sanity image reference to URL
+  const backgroundImageUrl = content?.backgroundImage
+    ? urlFor(content.backgroundImage).url()
+    : null;
+
   return (
-    <PageLayout backgroundImage={content.backgroundImage}>
+    <PageLayout
+      backgroundImage={backgroundImageUrl || "/images/contact-bg.png"}
+    >
       <div className={styles.contact}>
         <header>
-          <h1>{content.title}</h1>
-          {content.body ? <Markdown content={content.body} /> : null}
+          <h1>{content?.title || "Contact"}</h1>
+          {content?.body ? <Markdown content={content.body} /> : null}
         </header>
+        <div className={styles.contact__social}>
+          <SocialLinks />
+        </div>
         <ul className={styles.contact__list}>
           {contacts.map((contact) => (
-            <li key={`${contact.category}-${contact.email}`} className={styles.contact__item}>
-              <div className={styles.contact__label}>
-                {contact.category}: {contact.email}
-              </div>
-              <a
-                className={styles.contact__button}
-                href={`mailto:${contact.email}`}
-              >
-                {contact.buttonLabel} →
+            <li
+              key={`${contact._id}-${contact.email}`}
+              className={styles.contact__item}
+            >
+              <a href={`mailto:${contact.email}`}>
+                <div className={styles.contact__label}>{contact.email}</div>
               </a>
             </li>
           ))}
         </ul>
-        <div className={styles.contact__social}>
-          <SocialLinks />
-        </div>
       </div>
     </PageLayout>
   );

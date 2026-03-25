@@ -1,7 +1,8 @@
 import Markdown from "@/components/common/Markdown";
 import PageLayout from "@/components/common/PageLayout";
-import { getPageContent, getReleases } from "@/lib/content";
 import styles from "./Music.module.scss";
+import { getAllReleases, getPageBySlug } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
 
 const formatReleaseMeta = (releaseType: string, releaseDate: string) => {
   const date = new Date(`${releaseDate}T00:00:00Z`);
@@ -11,9 +12,14 @@ const formatReleaseMeta = (releaseType: string, releaseDate: string) => {
 
 export default async function Music() {
   const [content, releases] = await Promise.all([
-    getPageContent("music"),
-    getReleases(),
+    getPageBySlug("music"),
+    getAllReleases(),
   ]);
+
+  // Convert Sanity image reference to URL
+  const backgroundImageUrl = content?.backgroundImage
+    ? urlFor(content.backgroundImage).url()
+    : null;
 
   const albums = releases.filter((release) => release.release_type === "album");
   const singles = releases.filter(
@@ -21,11 +27,13 @@ export default async function Music() {
   );
 
   return (
-    <PageLayout backgroundImage={content.backgroundImage}>
+    <PageLayout
+      backgroundImage={backgroundImageUrl || "/images/contact-bg.png"}
+    >
       <div className={styles.music}>
         <header>
-          <h1 className={styles.music__heading}>{content.title}</h1>
-          {content.body ? <Markdown content={content.body} /> : null}
+          <h1 className={styles.music__heading}>{content?.title || "Music"}</h1>
+          {content?.body ? <Markdown content={content.body} /> : null}
         </header>
         <section className={styles.music__section}>
           <h2 className={styles.music__heading}>Albums</h2>
@@ -40,15 +48,17 @@ export default async function Music() {
                   >
                     <img
                       className={styles.music__cover}
-                      src={album.coverImage}
-                      alt={album.caption}
+                      src={
+                        album.coverImage ? urlFor(album.coverImage).url() : ""
+                      }
+                      alt={album.caption || album.title}
                     />
                   </a>
                 ) : (
                   <img
                     className={styles.music__cover}
-                    src={album.coverImage}
-                    alt={album.caption}
+                    src={album.coverImage ? urlFor(album.coverImage).url() : ""}
+                    alt={album.caption || album.title}
                   />
                 )}
                 <div className={styles.music__caption}>{album.title}</div>
@@ -73,15 +83,21 @@ export default async function Music() {
                     >
                       <img
                         className={styles.music__cover}
-                        src={single.coverImage}
-                        alt={single.caption}
+                        src={
+                          single.coverImage
+                            ? urlFor(single.coverImage).url()
+                            : ""
+                        }
+                        alt={single.caption || single.title}
                       />
                     </a>
                   ) : (
                     <img
                       className={styles.music__cover}
-                      src={single.coverImage}
-                      alt={single.caption}
+                      src={
+                        single.coverImage ? urlFor(single.coverImage).url() : ""
+                      }
+                      alt={single.caption || single.title}
                     />
                   )}
                   <div className={styles.music__caption}>{single.title}</div>

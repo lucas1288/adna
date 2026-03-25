@@ -1,19 +1,27 @@
 import Markdown from "@/components/common/Markdown";
 import PageLayout from "@/components/common/PageLayout";
-import { getPageContent, getReleases } from "@/lib/content";
+import { getPageBySlug, getAllReleases } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
 import styles from "./Home.module.scss";
 
 export default async function Home() {
   const [content, releases] = await Promise.all([
-    getPageContent("home"),
-    getReleases(),
+    getPageBySlug("home"),
+    getAllReleases(),
   ]);
-  const featured = releases.find((release) => release.is_featured);
+  const featured = releases.find(
+    (release: { is_featured: boolean }) => release.is_featured,
+  );
+
+  // Convert Sanity image reference to URL
+  const backgroundImageUrl = content?.backgroundImage
+    ? urlFor(content.backgroundImage).url()
+    : null;
 
   return (
-    <PageLayout backgroundImage={content.backgroundImage}>
+    <PageLayout backgroundImage={backgroundImageUrl || "/images/home-bg.png"}>
       <div className={styles.home}>
-        {content.body ? <Markdown content={content.body} /> : null}
+        {content?.body ? <Markdown content={content.body} /> : null}
         {featured ? (
           <section className={styles.home__featured}>
             <div className={styles.home__featuredTitle}>
@@ -32,8 +40,8 @@ export default async function Home() {
             ) : null}
             <img
               className={styles.home__featuredArt}
-              src={featured.coverImage}
-              alt={featured.caption}
+              src={featured.coverImage ? urlFor(featured.coverImage).url() : ""}
+              alt={featured.caption || featured.title}
             />
           </section>
         ) : null}
