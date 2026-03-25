@@ -37,6 +37,8 @@ const formatShowTime = (value: string) => {
   return `${displayHour}:${minutes} ${period}`;
 };
 
+export const revalidate = 30;
+
 export default async function Shows() {
   const [content, shows, strings] = await Promise.all([
     getPageContent("shows"),
@@ -64,42 +66,45 @@ export default async function Shows() {
             const showTime = formatShowTime(show.date);
 
             return (
-              <li key={`${show.date}-${show.venue}`} className={styles["shows__item"]}>
-              <div className={styles["shows__meta"]}>
-                <span className={styles["shows__date"]}>
-                  {formatShowDate(show.date)}
-                </span>
-                {show.venue ? (
-                  <span className={styles["shows__venue"]}>{show.venue}</span>
-                ) : null}
-                {show.lineup ? (
-                  <span className={styles["shows__note"]}>{show.lineup}</span>
-                ) : null}
-                {show.note ? (
-                  <span className={styles["shows__note"]}>{show.note}</span>
-                ) : null}
-              </div>
-              {show.location ? (
-                <div className={styles["shows__location"]}>{show.location}</div>
-              ) : null}
-              {showTime ? (
-                <div className={styles["shows__location"]}>
-                  {showTime}
+              <li
+                key={`${show.date}-${show.venue}`}
+                className={styles["shows__item"]}
+              >
+                <div className={styles["shows__meta"]}>
+                  <span className={styles["shows__date"]}>
+                    {formatShowDate(show.date)}
+                  </span>
+                  {show.venue ? (
+                    <span className={styles["shows__venue"]}>{show.venue}</span>
+                  ) : null}
+                  {show.lineup ? (
+                    <span className={styles["shows__note"]}>{show.lineup}</span>
+                  ) : null}
+                  {show.note ? (
+                    <span className={styles["shows__note"]}>{show.note}</span>
+                  ) : null}
                 </div>
-              ) : null}
-              {show.ticketsUrl && show.ticketsLabel ? (
-                <div className={styles["shows__action"]}>
-                  <a
-                    className={styles["shows__tickets"]}
-                    href={show.ticketsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {show.ticketsLabel}
-                  </a>
-                </div>
-              ) : null}
-            </li>
+                {show.location ? (
+                  <div className={styles["shows__location"]}>
+                    {show.location}
+                  </div>
+                ) : null}
+                {showTime ? (
+                  <div className={styles["shows__location"]}>{showTime}</div>
+                ) : null}
+                {show.ticketsUrl && show.ticketsLabel ? (
+                  <div className={styles["shows__action"]}>
+                    <a
+                      className={styles["shows__tickets"]}
+                      href={show.ticketsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {show.ticketsLabel}
+                    </a>
+                  </div>
+                ) : null}
+              </li>
             );
           })
         )}

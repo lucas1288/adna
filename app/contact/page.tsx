@@ -5,6 +5,8 @@ import { getPageBySlug, getAllContacts } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import styles from "./Contact.module.scss";
 
+export const revalidate = 30;
+
 export default async function Contact() {
   const [content, contacts] = await Promise.all([
     getPageBySlug("contact"),
