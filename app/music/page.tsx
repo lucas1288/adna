@@ -29,9 +29,7 @@ export default async function Music() {
   );
 
   return (
-    <PageLayout
-      backgroundImage={backgroundImageUrl || "/images/contact-bg.png"}
-    >
+    <PageLayout backgroundImage={backgroundImageUrl || "/images/music-bg.png"}>
       <div className={styles.music}>
         <header>
           <h1 className={styles.music__heading}>{content?.title || "Music"}</h1>

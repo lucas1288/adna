@@ -3,8 +3,8 @@
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import Navigation from "./Navigation";
-import type { NavigationItem } from "@/lib/content";
 import styles from "./Header.module.scss";
+import { NavigationItem } from "./types";
 
 const subscribeResize = (callback: () => void) => {
   window.addEventListener("resize", callback);
@@ -23,7 +23,7 @@ const Header = ({ logoText, navigationItems }: HeaderProps) => {
   const windowWidth = useSyncExternalStore(
     subscribeResize,
     getWidthSnapshot,
-    getWidthServerSnapshot
+    getWidthServerSnapshot,
   );
   const isDesktop = windowWidth >= 769;
 

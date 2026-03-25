@@ -1,6 +1,8 @@
 import Markdown from "@/components/common/Markdown";
 import PageLayout from "@/components/common/PageLayout";
-import { getLanguageStrings, getPageContent, getShows } from "@/lib/content";
+import { getUpcomingShows } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
+import { getPageBySlug } from "@/sanity/lib/queries";
 import styles from "./Shows.module.scss";
 
 const formatShowDate = (value: string) => {
@@ -40,17 +42,20 @@ const formatShowTime = (value: string) => {
 export const revalidate = 30;
 
 export default async function Shows() {
-  const [content, shows, strings] = await Promise.all([
-    getPageContent("shows"),
-    getShows(),
-    getLanguageStrings(),
+  const [content, shows] = await Promise.all([
+    getPageBySlug("shows"),
+    getUpcomingShows(),
   ]);
 
+  const backgroundImageUrl = content?.backgroundImage
+    ? urlFor(content.backgroundImage).url()
+    : null;
+
   return (
-    <PageLayout backgroundImage={content.backgroundImage}>
+    <PageLayout backgroundImage={backgroundImageUrl || "/images/shows-bg.png"}>
       <header className={styles["shows__header"]}>
-        <h1 className={styles["shows__title"]}>{content.title}</h1>
-        {content.body ? (
+        <h1 className={styles["shows__title"]}>{content?.title || "Shows"}</h1>
+        {content?.body ? (
           <Markdown content={content.body} className={styles["shows__intro"]} />
         ) : null}
       </header>
@@ -58,7 +63,7 @@ export default async function Shows() {
         {shows.length === 0 ? (
           <li className={styles["shows__item"]}>
             <div className={styles["shows__meta"]}>
-              <span className={styles["shows__date"]}>{strings.no_shows}</span>
+              <span className={styles["shows__date"]}>No upcoming shows</span>
             </div>
           </li>
         ) : (
@@ -80,9 +85,6 @@ export default async function Shows() {
                   {show.lineup ? (
                     <span className={styles["shows__note"]}>{show.lineup}</span>
                   ) : null}
-                  {show.note ? (
-                    <span className={styles["shows__note"]}>{show.note}</span>
-                  ) : null}
                 </div>
                 {show.location ? (
                   <div className={styles["shows__location"]}>
@@ -91,18 +93,6 @@ export default async function Shows() {
                 ) : null}
                 {showTime ? (
                   <div className={styles["shows__location"]}>{showTime}</div>
-                ) : null}
-                {show.ticketsUrl && show.ticketsLabel ? (
-                  <div className={styles["shows__action"]}>
-                    <a
-                      className={styles["shows__tickets"]}
-                      href={show.ticketsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {show.ticketsLabel}
-                    </a>
-                  </div>
                 ) : null}
               </li>
             );
