@@ -1,4 +1,3 @@
-import BackgroundSetter from "./BackgroundSetter";
 import styles from "./PageLayout.module.scss";
 
 interface PageLayoutProps {
@@ -8,8 +7,12 @@ interface PageLayoutProps {
 
 const PageLayout = ({ backgroundImage, children }: PageLayoutProps) => {
   return (
-    <div className={styles.page}>
-      <BackgroundSetter image={backgroundImage} />
+    <div
+      className={styles.page}
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+      }}
+    >
       <div className={styles.pageContent}>{children}</div>
     </div>
   );

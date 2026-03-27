@@ -1,5 +1,5 @@
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
   width: 100%;
   padding: 1rem 0;
@@ -13,7 +13,7 @@
   padding: 0 2rem;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   position: relative;
 }
@@ -39,7 +39,7 @@
 // Desktop styles
 @media (min-width: 769px) {
   .header {
-    position: static;
+    //  position: static;
     padding: 2rem 0;
   }
   .container {
@@ -47,5 +47,4 @@
     gap: 2rem;
     justify-content: center;
   }
-
 }

@@ -1,5 +1,15 @@
 .page {
   flex: 1 0 auto;
+
+  // Background image styles
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+  // margin-top: -70px; // Adjust for fixed header height
+  padding-top: 70px; // Adjust for fixed header height
 }
 
 .pageContent {
@@ -10,6 +20,8 @@
   text-align: center;
   color: white;
   padding: 2rem;
+  position: relative;
+  z-index: 1;
   //   background-color: rgba(0, 0, 0, 0.3);
 
   h1 {
@@ -26,6 +38,10 @@
 
 // Desktop adjustments
 @media (min-width: 769px) {
+  .page {
+    // margin-top: -171.5px; // Adjust for fixed header height
+    padding-top: 171.5px; // Adjust for fixed header height
+  }
 }
 
 // Mobile adjustments
