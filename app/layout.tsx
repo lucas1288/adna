@@ -36,7 +36,7 @@ export default async function RootLayout({
       <body suppressHydrationWarning>
         <Header logoText="ADNA" navigationItems={navigationItems} />
         {children}
-        <Footer footerText="© 2024 ADNA" socialLinks={socialLinks} />
+        <Footer footerText="© 2026 ADNA" socialLinks={socialLinks} />
       </body>
     </html>
   );

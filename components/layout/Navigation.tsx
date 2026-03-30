@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import styles from "./Navigation.module.scss";
 import type { NavigationItem } from "./types";
 
@@ -19,6 +20,7 @@ const Navigation = ({
   items,
 }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -65,7 +67,11 @@ const Navigation = ({
               key={`${item.href}-${item.label}`}
               style={{ animationDelay: `${(index + 1) * 0.1}s` }}
             >
-              <Link href={item.href as string} onClick={closeMenu}>
+              <Link
+                href={item.href as string}
+                onClick={closeMenu}
+                className={pathname === item.href ? styles.active : ""}
+              >
                 {item.label}
               </Link>
             </li>
