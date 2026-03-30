@@ -124,4 +124,4 @@ No code changes required!
 
 ## License
 
-All rights reserved © 2024 ADNA
+All rights reserved © 2026 ADNA

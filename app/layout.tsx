@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
+import { Oswald } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { socialLinks } from "@/config/social-links";
 import "./globals.scss";
+
+const oswald = Oswald({
+  subsets: ["latin"],
+  variable: "--font-oswald",
+});
 
 export const metadata: Metadata = {
   title: "ADNA - Official Website",
@@ -26,11 +32,11 @@ export default async function RootLayout({
   ];
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={oswald.variable} suppressHydrationWarning>
       <body suppressHydrationWarning>
         <Header logoText="ADNA" navigationItems={navigationItems} />
         {children}
-        <Footer footerText="© 2024 ADNA" socialLinks={socialLinks} />
+        <Footer footerText="© 2026 ADNA" socialLinks={socialLinks} />
       </body>
     </html>
   );
