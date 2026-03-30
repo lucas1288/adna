@@ -2,15 +2,16 @@
   position: fixed;
   top: 0;
   width: 100%;
-  padding: 1rem 0;
   z-index: 100;
   background-color: transparent;
+  // Padding is now controlled inline via React
+  // No transition needed - React handles it smoothly
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -19,8 +20,9 @@
 }
 
 .logo {
-  position: static;
-  will-change: transform, left;
+  // Transform is controlled inline via React for smooth scrolling
+  // Add slight CSS transition for extra smoothness
+  transition: transform 0.1s ease-out;
 
   h1 {
     font-weight: 700;
@@ -28,23 +30,29 @@
     color: #ffffff;
     letter-spacing: 0.2em;
     white-space: nowrap;
-    will-change: font-size;
+    // Font size controlled inline via React
+    transition: font-size 0.1s ease-out;
   }
 
   a {
     text-decoration: none;
+    color: inherit;
   }
 }
 
 // Desktop styles
 @media (min-width: 769px) {
   .header {
-    //  position: static;
     padding: 2rem 0;
   }
+
   .container {
     flex-direction: column;
     gap: 2rem;
     justify-content: center;
+  }
+
+  .logo {
+    transform: none !important; // No transform on desktop
   }
 }

@@ -28,21 +28,11 @@ const Navigation = ({
     setIsOpen(false);
   };
 
-  // Calculate position for desktop hamburger (appears at right when visible)
-  const navStyle =
-    isDesktop && showHamburger
-      ? {
-          position: "absolute" as const,
-          right: "2rem",
-        }
-      : {};
-
   return (
     <nav
       className={`${styles.nav} ${
         !showHamburger && !showHorizontalMenu ? styles.hidden : ""
       }`}
-      style={navStyle}
     >
       {showHamburger && (
         <button
@@ -62,7 +52,7 @@ const Navigation = ({
         </button>
       )}
 
-      {/* Full-screen blurred overlay */}
+      {/* Full-screen menu overlay */}
       <div
         className={`${styles.menuOverlay} ${isOpen ? styles.open : ""} ${
           showHorizontalMenu ? styles.horizontal : ""
