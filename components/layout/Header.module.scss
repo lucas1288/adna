@@ -4,8 +4,6 @@
   width: 100%;
   z-index: 100;
   background-color: transparent;
-  // Padding is now controlled inline via React
-  // No transition needed - React handles it smoothly
 }
 
 .container {
@@ -20,8 +18,6 @@
 }
 
 .logo {
-  // Transform is controlled inline via React for smooth scrolling
-  // Add slight CSS transition for extra smoothness
   transition: transform 0.1s ease-out;
 
   h1 {
@@ -30,7 +26,6 @@
     color: #ffffff;
     letter-spacing: 0.2em;
     white-space: nowrap;
-    // Font size controlled inline via React
     transition: font-size 0.1s ease-out;
   }
 
@@ -40,7 +35,6 @@
   }
 }
 
-// Desktop styles
 @media (min-width: 769px) {
   .header {
     padding: 2rem 0;
